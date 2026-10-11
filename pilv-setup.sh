@@ -95,6 +95,8 @@ echo "apc.enable_cli=1" > /etc/php/$PHPV/cli/conf.d/99-apcu-cli.ini
 
 # 5. Andmebaas
 log "Loon andmebaasi"
+systemctl enable --now mariadb
+for i in $(seq 1 15); do [[ -S /run/mysqld/mysqld.sock ]] && break; sleep 2; done
 mysql <<SQL
 CREATE DATABASE IF NOT EXISTS nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE USER IF NOT EXISTS 'nextcloud'@'localhost' IDENTIFIED BY '$DB_PASS';
